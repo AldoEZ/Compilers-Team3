@@ -25,9 +25,6 @@ public class Token {
     
     @Override
     public String toString() {
-        return String.format(
-            "Token{type=%s, lexeme='%s'}",
-            this.type, this.lexeme
-        );
+        return String.format("%-10s\t'%s'", this.type, this.lexeme);
     }
 }

@@ -1,0 +1,106 @@
+Program         -> MainFunction
+
+MainFunction    -> Type main ( ) Block
+
+Type            -> int
+                | char
+                | float
+                | double
+                | void
+
+Block           -> { StmtList }
+
+StmtList        -> Stmt StmtList
+                | ε
+
+Stmt            -> DeclStmt
+                | AssignStmt
+                | IfStmt
+                | WhileStmt
+                | ForStmt
+                | CallStmt
+                | ReturnStmt
+                | Block
+
+DeclStmt        -> Type DeclList ;
+
+DeclList        -> DeclItem DeclListTail
+
+DeclListTail    -> , DeclItem DeclListTail
+                | ε
+
+DeclItem        -> id DeclInitOpt
+
+DeclInitOpt     -> = Expr
+                | ε
+
+AssignStmt      -> id = Expr ;
+
+IfStmt          -> if ( Condition ) Block ElsePart
+
+ElsePart        -> else Block
+                | ε
+
+WhileStmt       -> while ( Condition ) Block
+
+ForStmt         -> for ( ForInitOpt ; ConditionOpt ; ForUpdateOpt ) Block
+
+ForInitOpt      -> AssignExpr
+                | ε
+
+ConditionOpt    -> Condition
+                | ε
+
+ForUpdateOpt    -> UpdateExpr
+                | ε
+
+UpdateExpr      -> id ++
+                | id --
+                | AssignExpr
+
+AssignExpr      -> id = Expr
+
+CallStmt        -> id ( ArgListOpt ) ;
+
+ArgListOpt      -> ArgList
+                | ε
+
+ArgList         -> Arg ArgListTail
+
+ArgListTail     -> , Arg ArgListTail
+                | ε
+
+Arg             -> Expr
+
+ReturnStmt      -> return Expr ;
+
+Condition       -> Expr RelOp Expr
+
+RelOp           -> >
+                | <
+                | >=
+                | <=
+                | ==
+                | !=
+
+Expr            -> Term ExprTail
+
+ExprTail        -> AddOp Term ExprTail
+                | ε
+
+AddOp           -> +
+                | -
+
+Term            -> Factor TermTail
+
+TermTail        -> MulOp Factor TermTail
+                | ε
+
+MulOp           -> *
+                | /
+                | %
+
+Factor          -> id
+                | constant
+                | literal
+                | ( Expr )

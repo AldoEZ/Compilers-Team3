@@ -14,7 +14,7 @@ public class Main {
         System.out.println("Input:");
         
         try {
-            BufferedReader br = new BufferedReader(new FileReader("../../doc/test/test.c"));
+            BufferedReader br = new BufferedReader(new FileReader("../../../doc/test/test.c"));
             
             lineInput = br.readLine();
             while(lineInput != null) {
@@ -24,7 +24,7 @@ public class Main {
             System.out.println("\nTokens Clasification:");
             
             System.out.println("#\tTYPE\t\tLEXEME");
-            List<Token> fileTokens = lexer.tokenizeFile("../../doc/test/test.c");
+            List<Token> fileTokens = lexer.tokenizeFile("../../../doc/test/test.c");
             
             for (Token token : fileTokens) {
                 System.out.println(cntTokens + "\t" + token);

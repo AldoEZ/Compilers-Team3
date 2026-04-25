@@ -1,6 +1,6 @@
-package mx.unam.fi.compilers.g5.team03;
+package mx.unam.fi.compilers.g5.team03.lexer;
 
-import mx.unam.fi.compilers.g5.team03.TokenType;
+import mx.unam.fi.compilers.g5.team03.lexer.TokenType;
 
 /**
  * Class that functions as a token

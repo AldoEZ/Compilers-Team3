@@ -1,4 +1,4 @@
-package mx.unam.fi.compilers.g5.team03;
+package mx.unam.fi.compilers.g5.team03.lexer;
 
 /**
  * A set of constants that functions 

@@ -1,8 +1,12 @@
 int main() {
-    int x, a = 2, b = 3, c = 5;
-    x = a+b*5;
-    
-    printf("The value of x is %d", x);
-    
-    return 0;
+    int x = 5;
+    int y = 2;
+    x = x + y * 3;
+    if (x > 0) {
+        x--;
+    } else {
+        x = 0;
+    }
+    printf("x=%d", x);
+    return x;
 }

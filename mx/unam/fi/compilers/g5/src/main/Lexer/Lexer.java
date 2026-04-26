@@ -11,11 +11,7 @@ import java.util.regex.Matcher;
 
 public class Lexer {
     private static final Set<String> KEYWORDS = Set.of(
-    "auto", "break", "case", "char", "const", "continue", "default",
-        "do", "double", "else", "enum", "extern", "float", "for", "goto",
-        "if", "int", "long", "register", "return", "short", "signed",
-        "sizeof", "static", "struct", "switch", "typedef", "union",
-        "unsigned", "void", "volatile", "while"
+        "int", "char", "void", "if", "else", "return"
     );
     
     //* lexical rules
@@ -72,14 +68,14 @@ public class Lexer {
         //* operators
         rules.add(new LexerRule(
             TokenType.OPERATOR,
-            "\\+\\+|--|==|!=|<=|>=|&&|\\|\\||\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|<<|>>|->|[+\\-*/%=&|^~!<>]",
+            "\\+\\+|--|==|!=|<=|>=|[+\\-*/%=&!<>]",
             false
         ));
         
         //* punctuators
         rules.add(new LexerRule(
             TokenType.PUNCTUATOR,
-            "[(){}\\[\\],;.:?]",
+            "[(){},;]",
             false
         ));
         

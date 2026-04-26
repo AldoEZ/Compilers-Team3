@@ -7,22 +7,43 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         Lexer lexer = new Lexer();
-        int cntTokens = 1;
         
         try {
             List<Token> fileTokens = lexer.tokenizeFile("../../../doc/test/test.c");
             
             try (FileWriter fw = new FileWriter("../../../doc/tokens/tokens.txt", false)) {
                 for (Token token : fileTokens) {
-                    String content = cntTokens + "\t" + token + "\n";
+                    if (token.getType() == TokenType.ERROR) {
+                        throw new IllegalStateException(
+                            "Lexical error: invalid token -> " + token.getLexeme()
+                        );
+                    }
+                    
+                    String terminal = normalizeTokenForParser(token);
+                    String content = terminal + "\t" + token.getLexeme() + "\n";
                     fw.write(content);
-                    cntTokens++;
                 }
+                
+                fw.write("$\t$\n");
             }
             
             System.out.println("File successfully written.");
         } catch (IOException e) {
             System.out.println("Error writing file: " + e.getMessage());
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
         }
+    }
+    
+    private static String normalizeTokenForParser(Token token) {
+        String lexeme = token.getLexeme();
+        
+        return switch (token.getType()) {
+            case KEYWORD, OPERATOR, PUNCTUATOR -> lexeme;
+            case IDENTIFIER -> "id";
+            case CONSTANT -> "constant";
+            case LITERAL -> "literal";
+            case ERROR -> "ERROR";
+        };
     }
 }

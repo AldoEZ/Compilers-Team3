@@ -1,52 +1,53 @@
-1	KEYWORD   	'int'
-2	IDENTIFIER	'main'
-3	PUNCTUATOR	'('
-4	PUNCTUATOR	')'
-5	PUNCTUATOR	'{'
-6	KEYWORD   	'int'
-7	IDENTIFIER	'x'
-8	OPERATOR  	'='
-9	CONSTANT  	'5'
-10	PUNCTUATOR	';'
-11	KEYWORD   	'int'
-12	IDENTIFIER	'y'
-13	OPERATOR  	'='
-14	CONSTANT  	'2'
-15	PUNCTUATOR	';'
-16	IDENTIFIER	'x'
-17	OPERATOR  	'='
-18	IDENTIFIER	'x'
-19	OPERATOR  	'+'
-20	IDENTIFIER	'y'
-21	OPERATOR  	'*'
-22	CONSTANT  	'3'
-23	PUNCTUATOR	';'
-24	KEYWORD   	'if'
-25	PUNCTUATOR	'('
-26	IDENTIFIER	'x'
-27	OPERATOR  	'>'
-28	CONSTANT  	'0'
-29	PUNCTUATOR	')'
-30	PUNCTUATOR	'{'
-31	IDENTIFIER	'x'
-32	OPERATOR  	'--'
-33	PUNCTUATOR	';'
-34	PUNCTUATOR	'}'
-35	KEYWORD   	'else'
-36	PUNCTUATOR	'{'
-37	IDENTIFIER	'x'
-38	OPERATOR  	'='
-39	CONSTANT  	'0'
-40	PUNCTUATOR	';'
-41	PUNCTUATOR	'}'
-42	IDENTIFIER	'printf'
-43	PUNCTUATOR	'('
-44	LITERAL   	'"x=%d"'
-45	PUNCTUATOR	','
-46	IDENTIFIER	'x'
-47	PUNCTUATOR	')'
-48	PUNCTUATOR	';'
-49	KEYWORD   	'return'
-50	IDENTIFIER	'x'
-51	PUNCTUATOR	';'
-52	PUNCTUATOR	'}'
+int	int
+id	main
+(	(
+)	)
+{	{
+int	int
+id	x
+=	=
+constant	5
+;	;
+int	int
+id	y
+=	=
+constant	2
+;	;
+id	x
+=	=
+id	x
++	+
+id	y
+*	*
+constant	3
+;	;
+if	if
+(	(
+id	x
+>	>
+constant	0
+)	)
+{	{
+id	x
+--	--
+;	;
+}	}
+else	else
+{	{
+id	x
+=	=
+constant	0
+;	;
+}	}
+id	printf
+(	(
+literal	"x=%d"
+,	,
+id	x
+)	)
+;	;
+return	return
+id	x
+;	;
+}	}
+$	$

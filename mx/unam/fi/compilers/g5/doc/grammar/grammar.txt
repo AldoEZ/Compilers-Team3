@@ -1,110 +1,91 @@
-Program            -> FunctionDef
+0  Program'          -> Program
 
-FunctionDef        -> Type main ( ) Block
+1  Program           -> Program FunctionDef
+2  Program           -> FunctionDef
 
-Type               -> int
-                    | char
-                    | float
-                    | double
-                    | void
+3  FunctionDef       -> Type id ( ) Block
 
-Block              -> {}
-                    | { StmtList }
+4  Type              -> int
+5  Type              -> char
+6  Type              -> void
 
-StmtList           -> StmtList Stmt
-                    | Stmt
+7  Block             -> { }
+8  Block             -> { StmtList }
 
-Stmt               -> DeclStmt
-                    | AssignStmt
-                    | IfStmt
-                    | WhileStmt
-                    | ForStmt
-                    | PostfixStmt
-                    | CallStmt
-                    | ReturnStmt
-                    | Block
+9  StmtList          -> StmtList Stmt
+10 StmtList          -> Stmt
 
-DeclStmt           -> Type InitDeclList;
+11 Stmt              -> DeclStmt
+12 Stmt              -> AssignStmt
+13 Stmt              -> IfStmt
+14 Stmt              -> PostfixStmt
+15 Stmt              -> CallStmt
+16 Stmt              -> ReturnStmt
+17 Stmt              -> Block
 
-InitDeclList       -> InitDeclList , InitDecl
-                    | InitDecl
+18 DeclStmt          -> Type InitDeclList ;
 
-InitDecl           -> id
-                    | id = Expr
+19 InitDeclList      -> InitDeclList , InitDecl
+20 InitDeclList      -> InitDecl
 
-AssignStmt         -> LValue = Expr ;
+21 InitDecl          -> id
+22 InitDecl          -> id = Expr
 
-LValue             -> id
+23 AssignStmt        -> LValue = Expr ;
 
-IfStmt             -> if ( Condition ) Block
-                    | if ( Condition ) Block else Block
+24 LValue            -> id
 
-WhileStmt          -> while ( Condition ) Block
+25 IfStmt            -> if ( Condition ) Block
+26 IfStmt            -> if ( Condition ) Block else Block
 
-ForStmt            -> for ( ; ; ) Block
-                    | for ( AssignExpr ; ; ) Block
-                    | for ( ; Condition ; ) Block
-                    | for ( ; ; UpdateExpr ) Block
-                    | for ( AssignExpr ; Condition ; ) Block
-                    | for ( AssignExpr ; ; UpdateExpr ) Block
-                    | for ( ; Condition ; UpdateExpr ) Block
-                    | for ( AssignExpr ; Condition ; UpdateExpr ) Block
+27 PostfixStmt       -> id ++ ;
+28 PostfixStmt       -> id -- ;
 
-UpdateExpr         -> id ++
-                    | id --
-                    | AssignExpr
+29 CallStmt          -> id ( ) ;
+30 CallStmt          -> id ( ArgList ) ;
 
-PostfixStmt        -> id ++ ;
-                    | id -- ;
+31 ArgList           -> ArgList , Expr
+32 ArgList           -> Expr
 
-CallStmt           -> id ( ) ;
-                    | id ( ArgList ) ;
+33 ReturnStmt        -> return Expr ;
 
-ArgList            -> ArgList , Expr
-                    | Expr
+34 Condition         -> Expr RelOp Expr
+35 Condition         -> Expr
 
-ReturnStmt         -> return Expr ;
+36 RelOp             -> >
+37 RelOp             -> <
+38 RelOp             -> >=
+39 RelOp             -> <=
+40 RelOp             -> ==
+41 RelOp             -> !=
 
-Condition          -> Expr RelOp Expr
-                    | Expr
+42 Expr              -> Expr AddOp Term
+43 Expr              -> Term
 
-RelOp              -> >
-                    | <
-                    | >=
-                    | <=
-                    | ==
-                    | !=
+44 AddOp             -> +
+45 AddOp             -> -
 
-AssignExpr         -> id = Expr
+46 Term              -> Term MulOp Unary
+47 Term              -> Unary
 
-Expr               -> Expr AddOp Term
-                    | Term
+48 MulOp             -> *
+49 MulOp             -> /
+50 MulOp             -> %
 
-AddOp              -> +
-                    | -
+51 Unary             -> UnaryOp Unary
+52 Unary             -> PostfixExpr
 
-Term               -> Term MulOp Unary
-                    | Unary
+53 UnaryOp           -> +
+54 UnaryOp           -> -
+55 UnaryOp           -> !
+56 UnaryOp           -> &
+57 UnaryOp           -> *
 
-MulOp              -> *
-                    | /
-                    | %
+58 PostfixExpr       -> id ++
+59 PostfixExpr       -> id --
+60 PostfixExpr       -> Primary
 
-Unary              -> UnaryOp Unary
-                    | PostfixExpr
-
-UnaryOp            -> +
-                    | -
-                    | !
-                    | &
-                    | *
-                    | ~
-
-PostfixExpr        -> id ++
-                    | id --
-                    | Primary
-
-Primary            -> id
-                    | constant
-                    | literal
-                    | ( Expr )
+61 Primary           -> id
+62 Primary           -> constant
+63 Primary           -> literal
+64 Primary           -> ( Expr )

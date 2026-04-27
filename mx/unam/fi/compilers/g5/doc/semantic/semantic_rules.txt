@@ -26,350 +26,405 @@ Literal conventions:
 - literal.type = string if it is enclosed in double quotes
 
 Semantic Rules:
-
 0. Program' -> Program
-   { ok(Program') = ok(Program) ∧ FT contains a function main }
+    { 
+        ok(Program') = ok(Program) ∧ FT contains a function main 
+    }
 
 1. Program -> Program FunctionDef
-   {
-     if FT already contains FunctionDef.name => semantic error: function redeclared
-     else insertFunc(FunctionDef.name, FunctionDef.retType, 0)
-     ok(Program) = ok(Program1) ∧ ok(FunctionDef)
-   }
+    {
+        if FT already contains FunctionDef.name => semantic error: function redeclared
+        else insertFunc(FunctionDef.name, FunctionDef.retType, 0)
+        ok(Program) = ok(Program1) ∧ ok(FunctionDef)
+    }
 
 2. Program -> FunctionDef
-   {
-     if FT already contains FunctionDef.name => semantic error: function redeclared
-     else insertFunc(FunctionDef.name, FunctionDef.retType, 0)
-     ok(Program) = ok(FunctionDef)
-   }
+    {
+        if FT already contains FunctionDef.name => semantic error: function redeclared
+        else insertFunc(FunctionDef.name, FunctionDef.retType, 0)
+        ok(Program) = ok(FunctionDef)
+    }
 
 3. FunctionDef -> Type id ( ) Block
-   {
-     FunctionDef.name = id.lexeme
-     FunctionDef.retType = type(Type)
-     currentFuncType = type(Type)
-     ok(FunctionDef) = ok(Block)
-   }
+    {
+        FunctionDef.name = id.lexeme
+        FunctionDef.retType = type(Type)
+        currentFuncType = type(Type)
+        ok(FunctionDef) = ok(Block)
+    }
 
 4. Type -> int
-   { type(Type) = int }
+    { 
+        type(Type) = int 
+    }
 
 5. Type -> char
-   { type(Type) = char }
+    { 
+        type(Type) = char 
+    }
 
 6. Type -> void
-   { type(Type) = void }
+    { 
+        type(Type) = void 
+    }
 
 7. Block -> { }
-   {
-     pushScope()
-     ok(Block) = true
-     popScope()
-   }
+    {
+        pushScope()
+        ok(Block) = true
+        popScope()
+    }
 
 8. Block -> { StmtList }
-   {
-     pushScope()
-     ok(Block) = ok(StmtList)
-     popScope()
-   }
+    {
+        pushScope()
+        ok(Block) = ok(StmtList)
+        popScope()
+    }
 
 9. StmtList -> StmtList Stmt
-   { ok(StmtList) = ok(StmtList1) ∧ ok(Stmt) }
+    {
+        ok(StmtList) = ok(StmtList1) ∧ ok(Stmt) 
+    }
 
 10. StmtList -> Stmt
-    { ok(StmtList) = ok(Stmt) }
+    { 
+        ok(StmtList) = ok(Stmt) 
+    }
 
 11. Stmt -> DeclStmt
-    { ok(Stmt) = ok(DeclStmt) }
+    { 
+        ok(Stmt) = ok(DeclStmt)
+    }
 
 12. Stmt -> AssignStmt
-    { ok(Stmt) = ok(AssignStmt) }
+    { 
+        ok(Stmt) = ok(AssignStmt) 
+    }
 
 13. Stmt -> IfStmt
-    { ok(Stmt) = ok(IfStmt) }
+    {
+        ok(Stmt) = ok(IfStmt) 
+    }
 
 14. Stmt -> PostfixStmt
-    { ok(Stmt) = ok(PostfixStmt) }
+    { 
+        ok(Stmt) = ok(PostfixStmt) 
+    }
 
 15. Stmt -> CallStmt
-    { ok(Stmt) = ok(CallStmt) }
+    { 
+        ok(Stmt) = ok(CallStmt) 
+    }
 
 16. Stmt -> ReturnStmt
-    { ok(Stmt) = ok(ReturnStmt) }
+    { 
+        ok(Stmt) = ok(ReturnStmt) 
+    }
 
 17. Stmt -> Block
-    { ok(Stmt) = ok(Block) }
+    { 
+        ok(Stmt) = ok(Block) 
+    }
 
 18. DeclStmt -> Type InitDeclList ;
     {
-      if type(Type) = void => semantic error: variable cannot be void
-      InitDeclList.declType = type(Type)
-      ok(DeclStmt) = ok(InitDeclList)
+        if type(Type) = void => semantic error: variable cannot be void
+        InitDeclList.declType = type(Type)
+        ok(DeclStmt) = ok(InitDeclList)
     }
 
 19. InitDeclList -> InitDeclList , InitDecl
     {
-      InitDeclList1.declType = InitDeclList.declType
-      InitDecl.declType = InitDeclList.declType
-      ok(InitDeclList) = ok(InitDeclList1) ∧ ok(InitDecl)
+        InitDeclList1.declType = InitDeclList.declType
+        InitDecl.declType = InitDeclList.declType
+        ok(InitDeclList) = ok(InitDeclList1) ∧ ok(InitDecl)
     }
 
 20. InitDeclList -> InitDecl
     {
-      InitDecl.declType = InitDeclList.declType
-      ok(InitDeclList) = ok(InitDecl)
+        InitDecl.declType = InitDeclList.declType
+        ok(InitDeclList) = ok(InitDecl)
     }
 
 21. InitDecl -> id
     {
-      if lookupCurrent(id.lexeme) ≠ null => semantic error: variable redeclared
-      else insert(id.lexeme, InitDecl.declType)
-      ok(InitDecl) = true
+        if lookupCurrent(id.lexeme) ≠ null => semantic error: variable redeclared
+        else insert(id.lexeme, InitDecl.declType)
+        ok(InitDecl) = true
     }
 
 22. InitDecl -> id = Expr
     {
-      if lookupCurrent(id.lexeme) ≠ null => semantic error: variable redeclared
-      else insert(id.lexeme, InitDecl.declType)
+        if lookupCurrent(id.lexeme) ≠ null => semantic error: variable redeclared
+        else insert(id.lexeme, InitDecl.declType)
 
-      if ¬compatible(InitDecl.declType, type(Expr)) => semantic error: incompatible initialization
-      ok(InitDecl) = true
+        if ¬compatible(InitDecl.declType, type(Expr)) => semantic error: incompatible initialization
+        ok(InitDecl) = true
     }
 
 23. AssignStmt -> LValue = Expr ;
     {
-      if ¬compatible(type(LValue), type(Expr)) => semantic error: incompatible assignment
-      ok(AssignStmt) = ok(LValue) ∧ ok(Expr)
+        if ¬compatible(type(LValue), type(Expr)) => semantic error: incompatible assignment
+        ok(AssignStmt) = ok(LValue) ∧ ok(Expr)
     }
 
 24. LValue -> id
     {
-      if lookup(id.lexeme) = null => semantic error: variable not declared
-      else type(LValue) = lookup(id.lexeme)
-      ok(LValue) = true
+        if lookup(id.lexeme) = null => semantic error: variable not declared
+        else type(LValue) = lookup(id.lexeme)
+        ok(LValue) = true
     }
 
 25. IfStmt -> if ( Condition ) Block
     {
-      if type(Condition) ≠ bool => semantic error: invalid condition
-      ok(IfStmt) = ok(Condition) ∧ ok(Block)
+        if type(Condition) ≠ bool => semantic error: invalid condition
+        ok(IfStmt) = ok(Condition) ∧ ok(Block)
     }
 
 26. IfStmt -> if ( Condition ) Block else Block
     {
-      if type(Condition) ≠ bool => semantic error: invalid condition
-      ok(IfStmt) = ok(Condition) ∧ ok(Block1) ∧ ok(Block2)
+        if type(Condition) ≠ bool => semantic error: invalid condition
+        ok(IfStmt) = ok(Condition) ∧ ok(Block1) ∧ ok(Block2)
     }
 
 27. PostfixStmt -> id ++ ;
     {
-      if lookup(id.lexeme) = null => semantic error: variable not declared
-      if ¬numeric(lookup(id.lexeme)) => semantic error: ++ applies only to numeric types
-      ok(PostfixStmt) = true
+        if lookup(id.lexeme) = null => semantic error: variable not declared
+        if ¬numeric(lookup(id.lexeme)) => semantic error: ++ applies only to numeric types
+        ok(PostfixStmt) = true
     }
 
 28. PostfixStmt -> id -- ;
     {
-      if lookup(id.lexeme) = null => semantic error: variable not declared
-      if ¬numeric(lookup(id.lexeme)) => semantic error: -- applies only to numeric types
-      ok(PostfixStmt) = true
+        if lookup(id.lexeme) = null => semantic error: variable not declared
+        if ¬numeric(lookup(id.lexeme)) => semantic error: -- applies only to numeric types
+        ok(PostfixStmt) = true
     }
 
 29. CallStmt -> id ( ) ;
     {
-      if id.lexeme ≠ "printf" ∧ FT does not contain id.lexeme => semantic error: function not defined
-      if FT contains id.lexeme and arity(id.lexeme) ≠ 0 => semantic error: invalid number of arguments
-      ok(CallStmt) = true
+        if id.lexeme ≠ "printf" ∧ FT does not contain id.lexeme => semantic error: function not defined
+        if FT contains id.lexeme and arity(id.lexeme) ≠ 0 => semantic error: invalid number of arguments
+        ok(CallStmt) = true
     }
 
 30. CallStmt -> id ( ArgList ) ;
     {
-      if id.lexeme = "printf" then
-         if ArgList.count < 1 => semantic error: printf requires at least one argument
-         if ArgList.types[0] ≠ string => semantic error: first printf argument must be string
-      if id.lexeme ≠ "printf" then
-         if FT does not contain id.lexeme => semantic error: function not defined
-         if arity(id.lexeme) ≠ ArgList.count => semantic error: invalid number of arguments
-      ok(CallStmt) = ok(ArgList)
+        if id.lexeme = "printf" then
+            if ArgList.count < 1 => semantic error: printf requires at least one argument
+            if ArgList.types[0] ≠ string => semantic error: first printf argument must be string
+        if id.lexeme ≠ "printf" then
+            if FT does not contain id.lexeme => semantic error: function not defined
+            if arity(id.lexeme) ≠ ArgList.count => semantic error: invalid number of arguments
+        ok(CallStmt) = ok(ArgList)
     }
 
 31. ArgList -> ArgList , Expr
     {
-      ArgList.count = ArgList1.count + 1
-      ArgList.types = ArgList1.types ∘ [type(Expr)]
-      ok(ArgList) = ok(ArgList1) ∧ ok(Expr)
+        ArgList.count = ArgList1.count + 1
+        ArgList.types = ArgList1.types ∘ [type(Expr)]
+        ok(ArgList) = ok(ArgList1) ∧ ok(Expr)
     }
 
 32. ArgList -> Expr
     {
-      ArgList.count = 1
-      ArgList.types = [type(Expr)]
-      ok(ArgList) = ok(Expr)
+        ArgList.count = 1
+        ArgList.types = [type(Expr)]
+        ok(ArgList) = ok(Expr)
     }
 
 33. ReturnStmt -> return Expr ;
     {
-      if currentFuncType = void => semantic error: a void function cannot return an expression
-      if ¬compatible(currentFuncType, type(Expr)) => semantic error: incompatible return
-      ok(ReturnStmt) = ok(Expr)
+        if currentFuncType = void => semantic error: a void function cannot return an expression
+        if ¬compatible(currentFuncType, type(Expr)) => semantic error: incompatible return
+        ok(ReturnStmt) = ok(Expr)
     }
 
 34. Condition -> Expr RelOp Expr
     {
-      if ¬numeric(type(Expr1)) ∨ ¬numeric(type(Expr2)) => semantic error: invalid comparison
-      type(Condition) = bool
-      ok(Condition) = ok(Expr1) ∧ ok(RelOp) ∧ ok(Expr2)
+        if ¬numeric(type(Expr1)) ∨ ¬numeric(type(Expr2)) => semantic error: invalid comparison
+        type(Condition) = bool
+        ok(Condition) = ok(Expr1) ∧ ok(RelOp) ∧ ok(Expr2)
     }
 
 35. Condition -> Expr
     {
-      if ¬numeric(type(Expr)) => semantic error: invalid condition
-      type(Condition) = bool
-      ok(Condition) = ok(Expr)
+        if ¬numeric(type(Expr)) => semantic error: invalid condition
+        type(Condition) = bool
+        ok(Condition) = ok(Expr)
     }
 
 36. RelOp -> >
-    { ok(RelOp) = true }
+    { 
+        ok(RelOp) = true 
+    }
 
 37. RelOp -> <
-    { ok(RelOp) = true }
+    { 
+        ok(RelOp) = true 
+    }
 
 38. RelOp -> >=
-    { ok(RelOp) = true }
+    { 
+        ok(RelOp) = true 
+    }
 
 39. RelOp -> <=
     { ok(RelOp) = true }
 
 40. RelOp -> ==
-    { ok(RelOp) = true }
+    { 
+        ok(RelOp) = true 
+    }
 
 41. RelOp -> !=
-    { ok(RelOp) = true }
+    { 
+        ok(RelOp) = true 
+    }
 
 42. Expr -> Expr AddOp Term
     {
-      if ¬numeric(type(Expr1)) ∨ ¬numeric(type(Term)) => semantic error: invalid addition/subtraction
-      type(Expr) = int
-      ok(Expr) = ok(Expr1) ∧ ok(AddOp) ∧ ok(Term)
+        if ¬numeric(type(Expr1)) ∨ ¬numeric(type(Term)) => semantic error: invalid addition/subtraction
+        type(Expr) = int
+        ok(Expr) = ok(Expr1) ∧ ok(AddOp) ∧ ok(Term)
     }
 
 43. Expr -> Term
     {
-      type(Expr) = type(Term)
-      ok(Expr) = ok(Term)
+        type(Expr) = type(Term)
+        ok(Expr) = ok(Term)
     }
 
 44. AddOp -> +
-    { ok(AddOp) = true }
+    { 
+        ok(AddOp) = true 
+    }
 
 45. AddOp -> -
-    { ok(AddOp) = true }
+    { 
+        ok(AddOp) = true 
+    }
 
 46. Term -> Term MulOp Unary
     {
-      if ¬numeric(type(Term1)) ∨ ¬numeric(type(Unary)) => semantic error: invalid multiplication/division/modulo
-      type(Term) = int
-      ok(Term) = ok(Term1) ∧ ok(MulOp) ∧ ok(Unary)
+        if ¬numeric(type(Term1)) ∨ ¬numeric(type(Unary)) => semantic error: invalid multiplication/division/modulo
+        type(Term) = int
+        ok(Term) = ok(Term1) ∧ ok(MulOp) ∧ ok(Unary)
     }
 
 47. Term -> Unary
     {
-      type(Term) = type(Unary)
-      ok(Term) = ok(Unary)
+        type(Term) = type(Unary)
+        ok(Term) = ok(Unary)
     }
 
 48. MulOp -> *
-    { ok(MulOp) = true }
+    { 
+        ok(MulOp) = true
+    }
 
 49. MulOp -> /
-    { ok(MulOp) = true }
+    { 
+        ok(MulOp) = true 
+    }
 
 50. MulOp -> %
-    { ok(MulOp) = true }
+    { 
+        ok(MulOp) = true 
+    }
 
 51. Unary -> UnaryOp Unary
     {
-      if UnaryOp.op = "+" or UnaryOp.op = "-" then
-         if ¬numeric(type(Unary1)) => semantic error: invalid unary operator
-         type(Unary) = type(Unary1)
+        if UnaryOp.op = "+" or UnaryOp.op = "-" then
+            if ¬numeric(type(Unary1)) => semantic error: invalid unary operator
+            type(Unary) = type(Unary1)
 
-      if UnaryOp.op = "!" then
-         if ¬numeric(type(Unary1)) => semantic error: invalid ! operator
-         type(Unary) = bool
+        if UnaryOp.op = "!" then
+            if ¬numeric(type(Unary1)) => semantic error: invalid ! operator
+            type(Unary) = bool
 
-      if UnaryOp.op = "&" or UnaryOp.op = "*" then
-         semantic error: operators not supported in this subset
+        if UnaryOp.op = "&" or UnaryOp.op = "*" then
+            semantic error: operators not supported in this subset
 
-      ok(Unary) = ok(Unary1)
+        ok(Unary) = ok(Unary1)
     }
 
 52. Unary -> PostfixExpr
     {
-      type(Unary) = type(PostfixExpr)
-      ok(Unary) = ok(PostfixExpr)
+        type(Unary) = type(PostfixExpr)
+        ok(Unary) = ok(PostfixExpr)
     }
 
 53. UnaryOp -> +
-    { UnaryOp.op = "+" }
+    { 
+        UnaryOp.op = "+" 
+    }
 
 54. UnaryOp -> -
-    { UnaryOp.op = "-" }
+    { 
+        UnaryOp.op = "-" 
+    }
 
 55. UnaryOp -> !
-    { UnaryOp.op = "!" }
+    { 
+        UnaryOp.op = "!" 
+    }
 
 56. UnaryOp -> &
-    { UnaryOp.op = "&" }
+    { 
+        UnaryOp.op = "&" 
+    }
 
 57. UnaryOp -> *
-    { UnaryOp.op = "*" }
+    { 
+        UnaryOp.op = "*" 
+    }
 
 58. PostfixExpr -> id ++
     {
-      if lookup(id.lexeme) = null => semantic error: variable not declared
-      if ¬numeric(lookup(id.lexeme)) => semantic error: ++ applies only to numeric types
-      type(PostfixExpr) = lookup(id.lexeme)
-      ok(PostfixExpr) = true
+        if lookup(id.lexeme) = null => semantic error: variable not declared
+        if ¬numeric(lookup(id.lexeme)) => semantic error: ++ applies only to numeric types
+        type(PostfixExpr) = lookup(id.lexeme)
+        ok(PostfixExpr) = true
     }
 
 59. PostfixExpr -> id --
     {
-      if lookup(id.lexeme) = null => semantic error: variable not declared
-      if ¬numeric(lookup(id.lexeme)) => semantic error: -- applies only to numeric types
-      type(PostfixExpr) = lookup(id.lexeme)
-      ok(PostfixExpr) = true
+        if lookup(id.lexeme) = null => semantic error: variable not declared
+        if ¬numeric(lookup(id.lexeme)) => semantic error: -- applies only to numeric types
+        type(PostfixExpr) = lookup(id.lexeme)
+        ok(PostfixExpr) = true
     }
 
 60. PostfixExpr -> Primary
     {
-      type(PostfixExpr) = type(Primary)
-      ok(PostfixExpr) = ok(Primary)
+        type(PostfixExpr) = type(Primary)
+        ok(PostfixExpr) = ok(Primary)
     }
 
 61. Primary -> id
     {
-      if lookup(id.lexeme) = null => semantic error: variable not declared
-      else type(Primary) = lookup(id.lexeme)
-      ok(Primary) = true
+        if lookup(id.lexeme) = null => semantic error: variable not declared
+        else type(Primary) = lookup(id.lexeme)
+        ok(Primary) = true
     }
 
 62. Primary -> constant
     {
-      type(Primary) = int
-      ok(Primary) = true
+        type(Primary) = int
+        ok(Primary) = true
     }
 
 63. Primary -> literal
     {
-      if literal is of the form 'c' => type(Primary) = char
-      if literal is of the form "text" => type(Primary) = string
-      ok(Primary) = true
+        if literal is of the form 'c' => type(Primary) = char
+        if literal is of the form "text" => type(Primary) = string
+        ok(Primary) = true
     }
 
 64. Primary -> ( Expr )
     {
-      type(Primary) = type(Expr)
-      ok(Primary) = ok(Expr)
+        type(Primary) = type(Expr)
+        ok(Primary) = ok(Expr)
     }

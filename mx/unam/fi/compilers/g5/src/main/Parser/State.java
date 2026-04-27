@@ -94,4 +94,12 @@ public class State {
         }
         return sb.toString();
     }
+    
+    public void addItem(Item newItem) {
+        for(Item item : items) {
+            if(item.equals(newItem)) return;
+        }
+        items.add(newItem);
+        sortItems(items);
+    }
 }

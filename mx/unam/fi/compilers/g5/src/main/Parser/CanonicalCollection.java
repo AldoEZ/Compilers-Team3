@@ -88,7 +88,7 @@ public class CanonicalCollection {
     public void printCollection() {
         int totalItems = 0;
         for(State state : states) {
-            System.out.println(state);
+            //System.out.println(state);
             totalItems += state.getItems().size();
         }
         System.out.println("Total states: " + states.size());

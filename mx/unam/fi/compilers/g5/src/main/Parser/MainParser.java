@@ -10,9 +10,14 @@ public class MainParser {
             FirstSet fs = new FirstSet(grammar);
             Closure closure = new Closure(grammar, fs);
             Goto goTo = new Goto(closure);
-            CanonicalCollection collection = new CanonicalCollection(grammar, closure, goTo);
+            CanonicalCollection lr = new CanonicalCollection(grammar, closure, goTo);
+            LALRCollection lalr = new LALRCollection(lr.getStates());
             
-            collection.printCollection();
+            System.out.println("=== Canonical LR(1) Collection ===");
+            lr.printCollection();
+            
+            System.out.println("=== LALR(1) Collection ===");
+            lalr.printCollection();
         } catch(IOException e) {
             System.out.println(e.getMessage());
         }

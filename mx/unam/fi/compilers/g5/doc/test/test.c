@@ -10,3 +10,7 @@ int main() {
     printf("x=%d", x);
     return x;
 }
+
+void hola() {
+    printf("Hola");
+}

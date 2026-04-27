@@ -50,4 +50,15 @@ return	return
 id	x
 ;	;
 }	}
+void	void
+id	hola
+(	(
+)	)
+{	{
+id	printf
+(	(
+literal	"Hola"
+)	)
+;	;
+}	}
 $	$

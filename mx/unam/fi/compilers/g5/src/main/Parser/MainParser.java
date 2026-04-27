@@ -2,6 +2,7 @@ package mx.unam.fi.compilers.g5.team03.parser;
 
 import mx.unam.fi.compilers.g5.team03.parser.*;
 import java.io.IOException;
+import java.util.List;
 
 public class MainParser {
     public static void main(String[] args) {
@@ -10,15 +11,23 @@ public class MainParser {
             FirstSet fs = new FirstSet(grammar);
             Closure closure = new Closure(grammar, fs);
             Goto goTo = new Goto(closure);
+            
             CanonicalCollection lr = new CanonicalCollection(grammar, closure, goTo);
             LALRCollection lalr = new LALRCollection(lr.getStates());
+            ParseTable parseTable = new ParseTable(grammar, lalr.getStates());
             
-            System.out.println("=== Canonical LR(1) Collection ===");
-            lr.printCollection();
+            ShiftReduceParser parser = new ShiftReduceParser(grammar, parseTable);
+            List<ParserToken> tokens = parser.readTokens("../../../doc/tokens/tokens.txt");
             
-            System.out.println("=== LALR(1) Collection ===");
-            lalr.printCollection();
-        } catch(IOException e) {
+            ParseTreeNode root = parser.parse(tokens);
+            parser.printSteps();
+            System.out.println("\n=== PARSE TREE ===");
+            System.out.println(root.prettyPrint());
+            
+            ParseTreeViewer.showTree(root);
+        } catch (IOException e) {
+            System.out.println("I/O error: " + e.getMessage());
+        } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }
     }

@@ -85,9 +85,8 @@ public class Item {
           .append(production.getLhs())
           .append(" -> ");
         
-        List<String> rhs = production.getRhs();
-        int rhsSize = rhs.size();        
-        for(int i = 0; i < rhsSize; i++) {
+        List<String> rhs = production.getRhs();       
+        for(int i = 0; i < rhs.size(); i++) {
             if (i == dotPosition)
                 sb.append(". ");
             

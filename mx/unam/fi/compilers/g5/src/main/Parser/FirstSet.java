@@ -45,8 +45,7 @@ public class FirstSet {
     private void terminalsFirstSet() {
         List<String> terminals = grammar.getTerminals();
         
-        int terminalsSize = terminals.size();
-        for(int i = 0; i < terminalsSize; i++) {
+        for(int i = 0; i < terminals.size(); i++) {
             String terminal = terminals.get(i);
             int symbolIndex = getSymbolIndex(terminal);
             
@@ -74,8 +73,7 @@ public class FirstSet {
                 
                 if(lhsIndex == -1 || firstSymbolIndex == -1) continue;
                 
-                int terminalsSize = grammar.getTerminals().size();
-                for(int terminalCol = 0; terminalCol < terminalsSize; terminalCol++) {
+                for(int terminalCol = 0; terminalCol < grammar.getTerminals().size(); terminalCol++) {
                     if(belongFirstSet[firstSymbolIndex][terminalCol] && !belongFirstSet[lhsIndex][terminalCol]) {
                         belongFirstSet[lhsIndex][terminalCol] = true;
                         changed = true;
@@ -93,9 +91,8 @@ public class FirstSet {
         if(symbolIndex == -1) return result;
         
         List<String> terminals = grammar.getTerminals();
-        int terminalsSize = terminals.size();
         
-        for(int i = 0; i < terminalsSize; i++) {
+        for(int i = 0; i < terminals.size(); i++) {
             if(belongFirstSet[symbolIndex][i])
                 result.add(terminals.get(i));
         }
@@ -112,8 +109,7 @@ public class FirstSet {
     }
     
     private int getSymbolIndex(String symbol) {
-        int symbolsSize = symbols.size();
-        for(int i = 0; i < symbolsSize; i++) {
+        for(int i = 0; i < symbols.size(); i++) {
             if(symbols.get(i).equals(symbol))
                 return i;
         }

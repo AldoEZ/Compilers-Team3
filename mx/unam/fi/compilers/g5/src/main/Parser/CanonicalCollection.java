@@ -37,8 +37,7 @@ public class CanonicalCollection {
         List<Item> startClosure = closure.itemClosure(startItems);
         states.add(new State(0, startClosure));
         
-        int statesSize = states.size();
-        for(int i = 0; i < statesSize; i++) {
+        for(int i = 0; i < states.size(); i++) {
             State currentState = states.get(i);
             
             List<String> symbols = relevantSymbols(currentState);
@@ -87,8 +86,14 @@ public class CanonicalCollection {
     }
     
     public void printCollection() {
+        int totalItems = 0;
         for(State state : states) {
             System.out.println(state);
+            totalItems += state.getItems().size();
         }
+        System.out.println("Total states: " + states.size());
+        System.out.println("Total items: " + totalItems);
+        System.out.println("Total transitions: " + 
+            states.stream().mapToInt(s -> s.getTransitions().size()).sum());
     }
 }

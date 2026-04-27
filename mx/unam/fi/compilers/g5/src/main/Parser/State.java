@@ -59,8 +59,7 @@ public class State {
         List<Item> sortedOther = new ArrayList<>(otherItems);
         sortItems(sortedOther);
         
-        int itemSize = items.size();
-        for(int i = 0; i < itemSize; i++) {
+        for(int i = 0; i < items.size(); i++) {
             if(!items.get(i).equals(sortedOther.get(i))) return false;
         }
         return true;
@@ -73,8 +72,7 @@ public class State {
         
         sortItems(otherItems);
         
-        int itemSize = items.size();
-        for(int i = 0; i < itemSize; i++) {
+        for(int i = 0; i < items.size(); i++) {
             if(!items.get(i).sameCore(otherItems.get(i))) return false;
         }
         return true;

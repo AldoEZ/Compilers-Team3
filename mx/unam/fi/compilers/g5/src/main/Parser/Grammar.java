@@ -1,5 +1,6 @@
 package mx.unam.fi.compilers.g5.team03.parser;
 
+import mx.unam.fi.compilers.g5.team03.parser.Production;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,47 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * class that stores the complete grammar, 
- * and makes use of the production class
+ * class that stores the complete grammar
+ * and divides its symbols
  */
 public class Grammar {
-    /**
-     * class that stores the productions individually
-     */
-    public static class Production {
-        /**
-         * number -> number of production
-         * lhs -> left-hand side (symbol that produces)
-         * rhs -> right-hand side (symbol that is produced)
-         */
-        private final int number;
-        private final String lhs;
-        private final List<String> rhs;
-        
-        
-        public Production(int number, String lhs, List<String> rhs) {
-            this.number = number;
-            this.lhs = lhs;
-            this.rhs = new ArrayList<>(rhs);
-        }
-        
-        public int getNumber() {
-            return number;
-        }
-        
-        public String getLhs() {
-            return lhs;
-        }
-        
-        public List<String> getRhs() {
-            return new ArrayList<>(rhs);
-        }
-        
-        @Override
-        public String toString() {
-            return number + " " + lhs + " -> " + String.join(" ", rhs);
-        }
-    }
     /**
      * terminals -> terminal symbols
      * nonTerminals -> non-terminal symbols
@@ -64,18 +28,17 @@ public class Grammar {
         nonTerminals = new ArrayList<>();
         productions = new ArrayList<>();
         
-        readGrammarFromFile(filePath);
+        readGrammar(filePath);
         
-        if (productions.isEmpty()) {
+        if (productions.isEmpty()) 
             throw new IllegalStateException("The grammar file is empty.");
-        }
         
         startSymbol = productions.get(0).getLhs();
-        inferTerminals();
-        addEndMarker();
+        addTerminals();
+        addFinalSymbol();
     }
     
-    private void readGrammarFromFile(String filePath) throws IOException {
+    private void readGrammar(String filePath) throws IOException {
         List<String[]> rawLines = new ArrayList<>();
         
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -137,28 +100,24 @@ public class Grammar {
         
         String[] parts = text.split("\\s+");
         for (String part : parts) {
-            if (!part.isEmpty()) {
+            if (!part.isEmpty())
                 symbols.add(part);
-            }
         }
-        
         return symbols;
     }
     
-    private void inferTerminals() {
+    private void addTerminals() {
         for (Production production : productions) {
             for (String symbol : production.getRhs()) {
-                if (!nonTerminals.contains(symbol) && !terminals.contains(symbol)) {
+                if (!nonTerminals.contains(symbol) && !terminals.contains(symbol))
                     terminals.add(symbol);
-                }
             }
         }
     }
     
-    private void addEndMarker() {
-        if (!terminals.contains("$")) {
+    private void addFinalSymbol() {
+        if (!terminals.contains("$"))
             terminals.add("$");
-        }
     }
     
     public List<String> getTerminals() {
@@ -189,36 +148,32 @@ public class Grammar {
         List<Production> result = new ArrayList<>();
         
         for (Production production : productions) {
-            if (production.getLhs().equals(lhs)) {
+            if (production.getLhs().equals(lhs))
                 result.add(production);
-            }
         }
-        
         return result;
     }
     
     public Production getProductionByNumber(int number) {
         for (Production production : productions) {
-            if (production.getNumber() == number) {
+            if (production.getNumber() == number)
                 return production;
-            }
         }
         return null;
     }
-    
     public void printGrammar() {
         System.out.println("Start symbol: " + startSymbol);
-        
+
         System.out.println("\nNon-terminals:");
         for (String nonTerminal : nonTerminals) {
             System.out.println(nonTerminal);
         }
-        
+
         System.out.println("\nTerminals:");
         for (String terminal : terminals) {
             System.out.println(terminal);
         }
-        
+
         System.out.println("\nProductions:");
         for (Production production : productions) {
             System.out.println(production);

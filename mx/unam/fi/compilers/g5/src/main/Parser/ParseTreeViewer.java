@@ -39,7 +39,7 @@ public class ParseTreeViewer extends JFrame {
     private int currentMatchIndex;
     
     public ParseTreeViewer(ParseTreeNode root) {
-        setTitle("Parse Tree Viewer");
+        setTitle("Parse Tree");
         setSize(1100, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

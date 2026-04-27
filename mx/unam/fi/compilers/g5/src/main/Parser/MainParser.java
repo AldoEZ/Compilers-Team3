@@ -20,9 +20,9 @@ public class MainParser {
             List<ParserToken> tokens = parser.readTokens("../../../doc/tokens/tokens.txt");
             
             ParseTreeNode root = parser.parse(tokens);
-            parser.printSteps();
-            System.out.println("\n=== PARSE TREE ===");
-            System.out.println(root.prettyPrint());
+            // parser.printSteps();
+            // System.out.println("\n=== PARSE TREE ===");
+            // System.out.println(root.prettyPrint());
             
             ParseTreeViewer.showTree(root);
         } catch (IOException e) {

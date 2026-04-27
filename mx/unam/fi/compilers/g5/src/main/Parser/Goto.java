@@ -17,13 +17,13 @@ public class Goto {
     public List<Item> itemGoto(List<Item> items, String symbol) {
         List<Item> movedItems = new ArrayList<>();
         
-        for (Item item : items) {
+        for(Item item : items) {
             String symbolAfterDot = item.getSymbolAfterDot();
             
-            if (symbolAfterDot != null && symbolAfterDot.equals(symbol))
+            if(symbolAfterDot != null && symbolAfterDot.equals(symbol))
                 movedItems.add(item.moveDot());
         }
-        if (movedItems.isEmpty()) return movedItems;
+        if(movedItems.isEmpty()) return movedItems;
         
         return closure.itemClosure(movedItems);
     }
@@ -32,7 +32,7 @@ public class Goto {
         List<Item> result = itemGoto(items, symbol);
         
         System.out.println("GOTO with symbol: " + symbol);
-        for (Item item : result) {
+        for(Item item : result) {
             System.out.println(item);
         }
     }

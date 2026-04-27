@@ -8,8 +8,12 @@ public class MainParser {
         try {
             Grammar grammar = new Grammar("../../../doc/grammar/grammar.txt");
             FirstSet fs = new FirstSet(grammar);
+            Closure closure = new Closure(grammar, fs);
+            Goto goTo = new Goto(closure);
+            CanonicalCollection collection = new CanonicalCollection(grammar, closure, goTo);
             
-        } catch (IOException e) {
+            collection.printCollection();
+        } catch(IOException e) {
             System.out.println(e.getMessage());
         }
     }

@@ -31,16 +31,14 @@ public class FirstSet {
     }
     
     private void initializeSymbols() {
-        for (String terminal : grammar.getTerminals()) {
-            if (!symbols.contains(terminal)) {
+        for(String terminal : grammar.getTerminals()) {
+            if(!symbols.contains(terminal)) 
                 symbols.add(terminal);
-            }
         }
         
-        for (String nonTerminal : grammar.getNonTerminals()) {
-            if (!symbols.contains(nonTerminal)) {
+        for(String nonTerminal : grammar.getNonTerminals()) {
+            if(!symbols.contains(nonTerminal))
                 symbols.add(nonTerminal);
-            }
         }
     }
     
@@ -48,11 +46,11 @@ public class FirstSet {
         List<String> terminals = grammar.getTerminals();
         
         int terminalsSize = terminals.size();
-        for (int i = 0; i < terminalsSize; i++) {
+        for(int i = 0; i < terminalsSize; i++) {
             String terminal = terminals.get(i);
             int symbolIndex = getSymbolIndex(terminal);
             
-            if (symbolIndex != -1)
+            if(symbolIndex != -1)
                 belongFirstSet[symbolIndex][i] = true;
         }
     }
@@ -63,7 +61,7 @@ public class FirstSet {
         do {
             changed = false;
             
-            for (Production production : grammar.getProductions()) {
+            for(Production production : grammar.getProductions()) {
                 String lhs = production.getLhs();
                 List<String> rhs = production.getRhs();
                 
@@ -74,17 +72,17 @@ public class FirstSet {
                 int lhsIndex = getSymbolIndex(lhs);
                 int firstSymbolIndex = getSymbolIndex(firstSymbol);
                 
-                if (lhsIndex == -1 || firstSymbolIndex == -1) continue;
+                if(lhsIndex == -1 || firstSymbolIndex == -1) continue;
                 
                 int terminalsSize = grammar.getTerminals().size();
-                for (int terminalCol = 0; terminalCol < terminalsSize; terminalCol++) {
-                    if (belongFirstSet[firstSymbolIndex][terminalCol] && !belongFirstSet[lhsIndex][terminalCol]) {
+                for(int terminalCol = 0; terminalCol < terminalsSize; terminalCol++) {
+                    if(belongFirstSet[firstSymbolIndex][terminalCol] && !belongFirstSet[lhsIndex][terminalCol]) {
                         belongFirstSet[lhsIndex][terminalCol] = true;
                         changed = true;
                     }
                 }
             }
-        } while (changed);
+        } while(changed);
     }
     
     public List<String> getFirst(String symbol) {
@@ -92,13 +90,13 @@ public class FirstSet {
         
         int symbolIndex = getSymbolIndex(symbol);
         
-        if (symbolIndex == -1) return result;
+        if(symbolIndex == -1) return result;
         
         List<String> terminals = grammar.getTerminals();
         int terminalsSize = terminals.size();
         
-        for (int i = 0; i < terminalsSize; i++) {
-            if (belongFirstSet[symbolIndex][i])
+        for(int i = 0; i < terminalsSize; i++) {
+            if(belongFirstSet[symbolIndex][i])
                 result.add(terminals.get(i));
         }
         return result;
@@ -107,7 +105,7 @@ public class FirstSet {
     public List<String> getFirstOfSequence(List<String> sequence) {
         List<String> result = new ArrayList<>();
         
-        if (sequence == null || sequence.isEmpty()) return result;
+        if(sequence == null || sequence.isEmpty()) return result;
         
         String firstSymbol = sequence.get(0);
         return getFirst(firstSymbol);
@@ -115,14 +113,14 @@ public class FirstSet {
     
     private int getSymbolIndex(String symbol) {
         int symbolsSize = symbols.size();
-        for (int i = 0; i < symbolsSize; i++) {
-            if (symbols.get(i).equals(symbol))
+        for(int i = 0; i < symbolsSize; i++) {
+            if(symbols.get(i).equals(symbol))
                 return i;
         }
         return -1;
     }
     public void printFirstSets() {
-        for (String nonTerminal : grammar.getNonTerminals()) {
+        for(String nonTerminal : grammar.getNonTerminals()) {
             List<String> first = getFirst(nonTerminal);
             System.out.println("FIRST(" + nonTerminal + ") = " + first);
         }

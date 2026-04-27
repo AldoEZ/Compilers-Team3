@@ -30,7 +30,7 @@ public class Grammar {
         
         readGrammar(filePath);
         
-        if (productions.isEmpty()) 
+        if(productions.isEmpty()) 
             throw new IllegalStateException("The grammar file is empty.");
         
         startSymbol = productions.get(0).getLhs();
@@ -41,18 +41,18 @@ public class Grammar {
     private void readGrammar(String filePath) throws IOException {
         List<String[]> rawLines = new ArrayList<>();
         
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line = br.readLine();
             
-            while (line != null) {
+            while(line != null) {
                 line = line.trim();
                 
-                if (!line.isEmpty()) {
+                if(!line.isEmpty()) {
                     String[] parsed = parseGrammarLine(line);
                     rawLines.add(parsed);
                     
                     String lhs = parsed[1];
-                    if (!nonTerminals.contains(lhs)) {
+                    if(!nonTerminals.contains(lhs)) {
                         nonTerminals.add(lhs);
                     }
                 }
@@ -61,7 +61,7 @@ public class Grammar {
             }
         }
         
-        for (String[] parsed : rawLines) {
+        for(String[] parsed : rawLines) {
             int number = Integer.parseInt(parsed[0]);
             String lhs = parsed[1];
             List<String> rhs = splitSymbols(parsed[2]);
@@ -73,7 +73,7 @@ public class Grammar {
     private String[] parseGrammarLine(String line) {
         String[] sides = line.split("->");
         
-        if (sides.length != 2) {
+        if(sides.length != 2) {
             throw new IllegalStateException("Invalid production format: " + line);
         }
         
@@ -81,7 +81,7 @@ public class Grammar {
         String rightPart = sides[1].trim();
         
         int firstSpace = leftPart.indexOf(' ');
-        if (firstSpace == -1) {
+        if(firstSpace == -1) {
             throw new IllegalStateException("Invalid production numbering: " + line);
         }
         
@@ -94,21 +94,21 @@ public class Grammar {
     private List<String> splitSymbols(String text) {
         List<String> symbols = new ArrayList<>();
         
-        if (text.isEmpty()) {
+        if(text.isEmpty()) {
             return symbols;
         }
         
         String[] parts = text.split("\\s+");
-        for (String part : parts) {
-            if (!part.isEmpty())
+        for(String part : parts) {
+            if(!part.isEmpty())
                 symbols.add(part);
         }
         return symbols;
     }
     
     private void addTerminals() {
-        for (Production production : productions) {
-            for (String symbol : production.getRhs()) {
+        for(Production production : productions) {
+            for(String symbol : production.getRhs()) {
                 if (!nonTerminals.contains(symbol) && !terminals.contains(symbol))
                     terminals.add(symbol);
             }
@@ -147,35 +147,36 @@ public class Grammar {
     public List<Production> getProductionsByLhs(String lhs) {
         List<Production> result = new ArrayList<>();
         
-        for (Production production : productions) {
-            if (production.getLhs().equals(lhs))
+        for(Production production : productions) {
+            if(production.getLhs().equals(lhs))
                 result.add(production);
         }
         return result;
     }
     
     public Production getProductionByNumber(int number) {
-        for (Production production : productions) {
-            if (production.getNumber() == number)
+        for(Production production : productions) {
+            if(production.getNumber() == number)
                 return production;
         }
         return null;
     }
+    
     public void printGrammar() {
         System.out.println("Start symbol: " + startSymbol);
-
+        
         System.out.println("\nNon-terminals:");
-        for (String nonTerminal : nonTerminals) {
+        for(String nonTerminal : nonTerminals) {
             System.out.println(nonTerminal);
         }
-
+        
         System.out.println("\nTerminals:");
-        for (String terminal : terminals) {
+        for(String terminal : terminals) {
             System.out.println(terminal);
         }
-
+        
         System.out.println("\nProductions:");
-        for (Production production : productions) {
+        for(Production production : productions) {
             System.out.println(production);
         }
     }

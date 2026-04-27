@@ -36,21 +36,20 @@ public class Item {
     }
     
     public String getSymbolAfterDot() {
-        if (isComplete()) {
-            return null;
-        }
+        if(isComplete()) return null;
+        
         return production.getRhs().get(dotPosition);
     }
     
     public List<String> getBeta() {
-        if (isComplete() || dotPosition + 1 >= production.getRhs().size()) {
+        if(isComplete() || dotPosition + 1 >= production.getRhs().size()) {
             return List.of();
         }
         return production.getRhs().subList(dotPosition + 1, production.getRhs().size());
     }
     
     public Item moveDot() {
-        if (isComplete())
+        if(isComplete())
             throw new IllegalStateException("Cannot move dot in a complete item.");
         
         return new Item(production, dotPosition + 1, lookahead);
@@ -63,7 +62,7 @@ public class Item {
     
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Item other))
+        if(!(obj instanceof Item other))
             return false;
         
         return production.getNumber() == other.production.getNumber()
@@ -88,14 +87,14 @@ public class Item {
         
         List<String> rhs = production.getRhs();
         int rhsSize = rhs.size();        
-        for (int i = 0; i < rhsSize; i++) {
+        for(int i = 0; i < rhsSize; i++) {
             if (i == dotPosition)
                 sb.append(". ");
             
             sb.append(rhs.get(i)).append(" ");
         }
         
-        if (dotPosition == rhs.size())
+        if(dotPosition == rhs.size())
             sb.append(". ");
         
         sb.append(", ").append(lookahead).append("]");

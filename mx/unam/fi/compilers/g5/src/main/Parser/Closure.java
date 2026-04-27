@@ -20,7 +20,7 @@ public class Closure {
     public List<Item> itemClosure(List<Item> initialItems) {
         List<Item> closure = new ArrayList<>();
         
-        for (Item item : initialItems)
+        for(Item item : initialItems)
             addNewItem(closure, item);
         
         boolean changed;
@@ -30,25 +30,25 @@ public class Closure {
             
             List<Item> currentItems = new ArrayList<>(closure);
             
-            for (Item item : currentItems) {
+            for(Item item : currentItems) {
                 String symbolAfterDot = item.getSymbolAfterDot();
                 
-                if (symbolAfterDot == null) continue;
+                if(symbolAfterDot == null) continue;
                 
-                if (!grammar.isNonTerminal(symbolAfterDot)) continue;
+                if(!grammar.isNonTerminal(symbolAfterDot)) continue;
                 
                 List<String> lookaheads = lookAheads(item);
                 List<Production> productions = grammar.getProductionsByLhs(symbolAfterDot);
                 
-                for (Production production : productions) {
-                    for (String lookahead : lookaheads) {
+                for(Production production : productions) {
+                    for(String lookahead : lookaheads) {
                         Item newItem = new Item(production, 0, lookahead);
                         
-                        if (addNewItem(closure, newItem)) changed = true;
+                        if(addNewItem(closure, newItem)) changed = true;
                     }
                 }
             }
-        } while (changed);
+        } while(changed);
         
         return closure;
     }
@@ -56,7 +56,7 @@ public class Closure {
     private List<String> lookAheads(Item item) {
         List<String> beta = item.getBeta();
         
-        if (beta.isEmpty()) {
+        if(beta.isEmpty()) {
             List<String> result = new ArrayList<>();
             result.add(item.getLookahead());
             return result;
@@ -65,7 +65,7 @@ public class Closure {
     }
     
     private boolean addNewItem(List<Item> items, Item newItem) {
-        for (Item item : items) {
+        for(Item item : items) {
             if (item.equals(newItem)) return false;
         }
         
@@ -74,7 +74,7 @@ public class Closure {
     }
     
     public void printClosure(List<Item> items) {
-        for (Item item : items) {
+        for(Item item : items) {
             System.out.println(item);
         }
     }

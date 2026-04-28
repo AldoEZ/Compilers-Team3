@@ -1,8 +1,11 @@
 # Maven
-target/
+target/classes
+target/generated-sources
+target/maven-archiver
+target/maven-status
+target/test-classes
 *.class
 
-# IDE
 .idea/
 *.iml
 .vscode/

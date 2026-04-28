@@ -1,6 +1,5 @@
 package mx.unam.fi.compilers.g5.team03.lexer;
 
-import mx.unam.fi.compilers.g5.team03.lexer.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

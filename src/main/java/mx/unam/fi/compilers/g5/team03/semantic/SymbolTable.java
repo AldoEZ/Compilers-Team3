@@ -1,6 +1,5 @@
 package mx.unam.fi.compilers.g5.team03.semantic;
 
-import mx.unam.fi.compilers.g5.team03.semantic.*;
 import java.util.ArrayList;
 import java.util.List;
 

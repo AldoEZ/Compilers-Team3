@@ -12,11 +12,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.fxmisc.richtext.CodeArea;
+import javafx.scene.control.Label;
+import org.fxmisc.richtext.CodeArea;
 
 public class MainView {
     private final BorderPane root;
     
-    private final TextArea codeEditor;
+    private final CodeArea codeEditor;
     private final TextArea lexerOutput;
     private final TextArea parserOutput;
     private final TextArea semanticOutput;
@@ -29,7 +32,7 @@ public class MainView {
     public MainView() {
         root = new BorderPane();
         
-        codeEditor = new TextArea();
+        codeEditor = new CodeArea();
         lexerOutput = new TextArea();
         parserOutput = new TextArea();
         semanticOutput = new TextArea();
@@ -83,9 +86,12 @@ public class MainView {
     }
     
     private void configureComponents() {
-        codeEditor.setPromptText("Write your source code here...");
         codeEditor.setWrapText(false);
         codeEditor.getStyleClass().add("code-area");
+        
+        Label placeholder = new Label("Write your source code here...");
+        placeholder.getStyleClass().add("code-placeholder");
+        codeEditor.setPlaceholder(placeholder);
         
         lexerOutput.setEditable(false);
         parserOutput.setEditable(false);
@@ -107,7 +113,7 @@ public class MainView {
         return root;
     }
     
-    public TextArea getCodeEditor() {
+    public CodeArea getCodeEditor() {
         return codeEditor;
     }
     

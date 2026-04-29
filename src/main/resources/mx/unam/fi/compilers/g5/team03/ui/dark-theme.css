@@ -211,3 +211,46 @@
     -fx-font-size: 16px;
     -fx-text-fill: #94a3b8;
 }
+
+.token-keyword {
+    -fx-fill: #60a5fa;
+    -fx-font-weight: bold;
+}
+
+.token-identifier {
+    -fx-fill: #f8fafc;
+}
+
+.token-constant {
+    -fx-fill: #fbbf24;
+}
+
+.token-literal {
+    -fx-fill: #34d399;
+}
+
+.token-operator {
+    -fx-fill: #c084fc;
+}
+
+.token-punctuator {
+    -fx-fill: #cbd5e1;
+}
+
+.token-error {
+    -fx-fill: #f87171;
+    -fx-underline: true;
+}
+
+.token-default {
+    -fx-fill: #f8fafc;
+}
+
+.code-placeholder {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-style: italic;
+}
+
+.styled-text-area .caret {
+    -fx-stroke: #f8fafc;
+}

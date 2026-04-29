@@ -3,7 +3,11 @@ package mx.unam.fi.compilers.g5.team03.ui;
 import mx.unam.fi.compilers.g5.team03.lexer.*;
 import mx.unam.fi.compilers.g5.team03.parser.*;
 import mx.unam.fi.compilers.g5.team03.semantic.SemanticAnalyzer;
-
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.model.StyleSpans;
+import org.fxmisc.richtext.model.StyleSpansBuilder;
+import java.util.Collection;
+import java.util.Collections;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,6 +25,15 @@ public class CompilerController {
     public CompilerController(MainView view) {
         this.view = view;
         connectEvents();
+        connectHighlighting();
+    }
+    
+    private void connectHighlighting() {
+        CodeArea area = view.getCodeEditor();
+        
+        area.textProperty().addListener((obs, oldText, newText) -> {
+            area.setStyleSpans(0, computeHighlighting(newText));
+        });
     }
     
     private void connectEvents() {
@@ -40,10 +53,10 @@ public class CompilerController {
         }
         
         try {
-            // 0. Sobrescribir test.c con lo que escribió el usuario
-            writeSourceFile(sourceCode);
+            // 0 Sobrescribir test.c con lo que escribió el usuario
+            writeTest(sourceCode);
             
-            // 1. Lexer
+            // 1 Lexer
             Lexer lexer = new Lexer();
             List<Token> tokens = lexer.tokenize(sourceCode);
             
@@ -75,12 +88,12 @@ public class CompilerController {
             parserTokens.add(new ParserToken("$", "$"));
             tokensFileText.append("$\t$\n");
             
-            // 2. Sobrescribir tokens.txt con los tokens generados
-            writeTokensFile(tokensFileText.toString());
+            // 2 Sobrescribir tokens.txt con los tokens generados
+            writeTokens(tokensFileText.toString());
             
             view.getLexerOutput().setText(lexerText.toString());
             
-            // 3. Parser setup
+            // 3 Parser setup
             Grammar grammar = new Grammar(GRAMMAR_FILE_PATH.toString());
             FirstSet fs = new FirstSet(grammar);
             Closure closure = new Closure(grammar, fs);
@@ -90,18 +103,23 @@ public class CompilerController {
             LALRCollection lalr = new LALRCollection(lr.getStates());
             ParseTable parseTable = new ParseTable(grammar, lalr.getStates());
             
-            // 4. Parse
+            // 4 Parse
             ShiftReduceParser parser = new ShiftReduceParser(grammar, parseTable);
             ParseTreeNode root = parser.parse(parserTokens);
             
             StringBuilder parserText = new StringBuilder();
             parserText.append("Parsing Success!\n\n");
-            for (String step : parser.getSteps())
-                parserText.append(step).append("\n");
+            parserText.append("Total steps: ")
+                    .append(parser.getSteps().size())
+                    .append("\n");
+            parserText.append("Parse completed without syntax errors.\n\n");
+            
+            for (String actionLine : parser.getImportantActions())
+                parserText.append(actionLine).append("\n");
             
             view.getParserOutput().setText(parserText.toString());
             
-            // 5. Semantic analysis
+            // 5 Semantic analysis
             SemanticAnalyzer analyzer = new SemanticAnalyzer();
             boolean semanticOk = analyzer.analyze(root);
             
@@ -114,7 +132,7 @@ public class CompilerController {
                 
                 view.getSemanticOutput().setText(semanticText.toString());
             }
-            // 6. Parse tree gráfico
+            // 6 Parse tree gráfico
             view.getParseTreePane().setTree(root);
         } catch (IOException ex) {
             view.getParserOutput().setText("I/O error: " + ex.getMessage());
@@ -138,12 +156,12 @@ public class CompilerController {
         view.getParseTreePane().setTree(null);
     }
     
-    private void writeSourceFile(String sourceCode) throws IOException {
+    private void writeTest(String sourceCode) throws IOException {
         Files.createDirectories(TEST_FILE_PATH.getParent());
         Files.writeString(TEST_FILE_PATH, sourceCode, StandardCharsets.UTF_8);
     }
     
-    private void writeTokensFile(String tokensContent) throws IOException {
+    private void writeTokens(String tokensContent) throws IOException {
         Files.createDirectories(TOKENS_FILE_PATH.getParent());
         Files.writeString(TOKENS_FILE_PATH, tokensContent, StandardCharsets.UTF_8);
     }
@@ -156,6 +174,53 @@ public class CompilerController {
             case LITERAL -> "literal";
             case ERROR -> "ERROR";
             default -> token.getLexeme();
+        };
+    }
+    
+    private StyleSpans<Collection<String>> computeHighlighting(String text) {
+        Lexer lexer = new Lexer();
+        List<Token> tokens = lexer.tokenize(text);
+        
+        StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+        
+        int cursor = 0;
+        
+        for(Token token : tokens) {
+            if(token.getType() == TokenType.ERROR) continue;
+            
+            String lexeme = token.getLexeme();
+            int start = text.indexOf(lexeme, cursor);
+            
+            if(start < 0) continue;
+            
+            int end = start + lexeme.length();
+            
+            if (start > cursor)
+                spansBuilder.add(Collections.emptyList(), start - cursor);
+            
+            spansBuilder.add(
+                Collections.singleton(getStyleClassForToken(token)),
+                lexeme.length()
+            );
+            
+            cursor = end;
+        }
+        if(cursor < text.length())
+            spansBuilder.add(Collections.emptyList(), text.length() - cursor);
+        
+        return spansBuilder.create();
+    }
+    
+    private String getStyleClassForToken(Token token) {
+        return switch (token.getType()) {
+            case KEYWORD -> "token-keyword";
+            case IDENTIFIER -> "token-identifier";
+            case CONSTANT -> "token-constant";
+            case LITERAL -> "token-literal";
+            case OPERATOR -> "token-operator";
+            case PUNCTUATOR -> "token-punctuator";
+            case ERROR -> "token-error";
+            default -> "token-default";
         };
     }
 }

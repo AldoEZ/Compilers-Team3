@@ -11,26 +11,33 @@ public class ShiftReduceParser {
     /**
      * grammar -> complete grammar
      * parseTable -> ACTION/GOTO table
-     * steps -> saves parsing steps
+     * steps -> full parsing trace
+     * importantActions -> compact parser actions for UI
      */
     private final Grammar grammar;
     private final ParseTable parseTable;
     private final List<String> steps;
+    private final List<String> importantActions;
     
     public ShiftReduceParser(Grammar grammar, ParseTable parseTable) {
         this.grammar = grammar;
         this.parseTable = parseTable;
         this.steps = new ArrayList<>();
+        this.importantActions = new ArrayList<>();
     }
     
     public List<String> getSteps() {
         return new ArrayList<>(steps);
     }
     
+    public List<String> getImportantActions() {
+        return new ArrayList<>(importantActions);
+    }
+    
     public List<ParserToken> readTokens(String filePath) throws IOException {
         List<ParserToken> tokens = new ArrayList<>();
         
-        try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line = br.readLine();
             
             while(line != null) {
@@ -48,6 +55,7 @@ public class ShiftReduceParser {
                 line = br.readLine();
             }
         }
+        
         if(tokens.isEmpty() || !tokens.get(tokens.size() - 1).getTerminal().equals("$"))
             tokens.add(new ParserToken("$", "$"));
         
@@ -56,6 +64,7 @@ public class ShiftReduceParser {
     
     public ParseTreeNode parse(List<ParserToken> inputTokens) {
         steps.clear();
+        importantActions.clear();
         
         Stack<Integer> stateStack = new Stack<>();
         Stack<String> symbolStack = new Stack<>();
@@ -79,9 +88,13 @@ public class ShiftReduceParser {
             );
             
             if(action == 0) {
+                List<String> expectedTokens = getExpectedTokens(currentState);
+                String expectedText = getMostProbableExpectedToken(expectedTokens);
+                
                 throw new IllegalStateException(
                     "Parsing error... Unexpected token: " + currentToken
                     + " in state I" + currentState
+                    + "\nExpected: " + expectedText
                 );
             }
             
@@ -89,21 +102,22 @@ public class ShiftReduceParser {
                 if(treeStack.isEmpty())
                     throw new IllegalStateException("Parsing finished but parse tree is empty.");
                 
+                importantActions.add("Accept");
                 System.out.println("Parsing Success!");
                 return treeStack.peek();
             }
             
             if(action > 0) {
-                // SHIFT
                 symbolStack.push(currentToken.getTerminal());
                 stateStack.push(action);
                 
-                ParseTreeNode terminalNode = new ParseTreeNode(currentToken.getTerminal(),currentToken.getLexeme());
+                ParseTreeNode terminalNode =
+                    new ParseTreeNode(currentToken.getTerminal(), currentToken.getLexeme());
                 treeStack.push(terminalNode);
                 
+                importantActions.add("Shift " + currentToken.getTerminal());
                 index++;
             } else {
-                // REDUCE
                 int productionNumber = -action;
                 Production production = grammar.getProductionByNumber(productionNumber);
                 
@@ -121,8 +135,8 @@ public class ShiftReduceParser {
                     stateStack.pop();
                     children.add(0, treeStack.pop());
                 }
-                
                 ParseTreeNode newNode = new ParseTreeNode(production.getLhs(), children);
+                
                 int topState = stateStack.peek();
                 int nextState = parseTable.getGoto(topState, production.getLhs());
                 
@@ -132,11 +146,18 @@ public class ShiftReduceParser {
                         + " with non-terminal " + production.getLhs()
                     );
                 }
+                
                 symbolStack.push(production.getLhs());
                 stateStack.push(nextState);
                 treeStack.push(newNode);
+                
+                importantActions.add("Reduce by " + formatProdution(production));
             }
         }
+    }
+    
+    private String formatProdution(Production production) {
+        return production.getLhs() + " -> " + String.join(" ", production.getRhs());
     }
     
     private String remainingInput(List<ParserToken> tokens, int start) {
@@ -144,13 +165,39 @@ public class ShiftReduceParser {
         
         for(int i = start; i < tokens.size(); i++) {
             sb.append(tokens.get(i).getTerminal());
-            if (i < tokens.size() - 1) sb.append(" ");
+            if(i < tokens.size() - 1) sb.append(" ");
         }
         return sb.toString();
     }
     
     public void printSteps() {
         System.out.println("=== PARSING STEPS ===");
-        for (String step : steps) System.out.println(step);
+        for (String step : steps) {
+            System.out.println(step);
+        }
+    }
+    
+    private String getMostProbableExpectedToken(List<String> expectedTokens) {
+        if (expectedTokens.isEmpty()) return "unknown";
+        
+        if (expectedTokens.contains(";")) return ";";
+        
+        if (expectedTokens.contains(")")) return ")";
+        
+        if (expectedTokens.contains(",")) return ",";
+        
+        return expectedTokens.get(0);
+    }
+    
+    private List<String> getExpectedTokens(int state) {
+        List<String> expected = new ArrayList<>();
+        
+        for (String terminal : grammar.getTerminals()) {
+            if (parseTable.getAction(state, terminal) != 0) expected.add(terminal);
+        }
+        if (parseTable.getAction(state, "$") != 0 && !expected.contains("$"))
+            expected.add("$");
+        
+        return expected;
     }
 }

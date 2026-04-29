@@ -167,6 +167,11 @@ public class SemanticAnalyzer {
         if(node.getChildren().size() == 1) {
             String name = readLexeme(node.getChildren().get(0));
             
+            if(symbolTable.existsFunction(name)) {
+                errors.add("Semantic error: variable name conflicts with function name -> " + name);
+                return;
+            }
+            
             try {
                 symbolTable.insertVariable(name, declaredType);
             } catch (RuntimeException e) {
@@ -175,6 +180,11 @@ public class SemanticAnalyzer {
         } else {
             String name = readLexeme(node.getChildren().get(0));
             ParseTreeNode exprNode = node.getChildren().get(2);
+            
+            if(symbolTable.existsFunction(name)) {
+                errors.add("Semantic error: variable name conflicts with function name -> " + name);
+                return;
+            }
             
             try {
                 symbolTable.insertVariable(name, declaredType);

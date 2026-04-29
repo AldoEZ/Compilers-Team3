@@ -105,3 +105,46 @@
     -fx-stroke: #64748b;
     -fx-stroke-width: 1.5;
 }
+
+.token-keyword {
+    -fx-fill: #1d4ed8;
+    -fx-font-weight: bold;
+}
+
+.token-identifier {
+    -fx-fill: #111827;
+}
+
+.token-constant {
+    -fx-fill: #b45309;
+}
+
+.token-literal {
+    -fx-fill: #047857;
+}
+
+.token-operator {
+    -fx-fill: #7c3aed;
+}
+
+.token-punctuator {
+    -fx-fill: #374151;
+}
+
+.token-error {
+    -fx-fill: #dc2626;
+    -fx-underline: true;
+}
+
+.token-default {
+    -fx-fill: #111827;
+}
+
+.code-placeholder {
+    -fx-text-fill: #6b7280;
+    -fx-font-style: italic;
+}
+
+.styled-text-area .caret {
+    -fx-stroke: #111827;
+}

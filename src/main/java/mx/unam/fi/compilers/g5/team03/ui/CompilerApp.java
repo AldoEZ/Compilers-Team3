@@ -12,7 +12,9 @@ public class CompilerApp extends Application {
         
         Scene scene = new Scene(mainView.getRoot(), 1250, 800);
         
-        applyTheme(scene, false);
+        applyTheme(scene, true);
+        mainView.getThemeButton().setSelected(true);
+        mainView.getThemeButton().setText("Dark Mode");
         
         mainView.getThemeButton().setOnAction(e -> {
             boolean darkMode = mainView.getThemeButton().isSelected();

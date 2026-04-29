@@ -1,6 +1,7 @@
-# Compilers-Team3
+# ParseFlow
+## Compilers-Team3
 
-Compilers-Team3 is a Java project managed with **Maven**.
+parseFlow is a Java project managed with **Maven**.
 
 The project currently includes:
 
@@ -77,7 +78,7 @@ mvn clean package
 
 ### Run the packaged fat JAR
 ```bash
-java -jar target/Compilers-Team3.jar
+java -jar target/PaseFlow.jar
 ```
 
 ## Expected Behavior

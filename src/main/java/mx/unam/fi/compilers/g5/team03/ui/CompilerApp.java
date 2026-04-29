@@ -21,7 +21,7 @@ public class CompilerApp extends Application {
             applyTheme(scene, darkMode);
             mainView.getThemeButton().setText(darkMode ? "Dark Mode" : "Light Mode");
         });
-        stage.setTitle("Compilers Team 3");
+        stage.setTitle("ParseFlow");
         stage.setScene(scene);
         stage.show();
     }

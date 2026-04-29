@@ -87,7 +87,7 @@
                                     <mainClass>mx.unam.fi.compilers.g5.team03.main.Main</mainClass>
                                 </transformer>
                             </transformers>
-                            <finalName>Compilers-Team3</finalName>
+                            <finalName>PaseFlow</finalName>
                         </configuration>
                     </execution>
                 </executions>

@@ -1,0 +1,213 @@
+.root-pane {
+    -fx-background-color: #0b1120;
+}
+
+.top-bar {
+    -fx-background-color: #0f172a;
+    -fx-border-color: #1e293b;
+    -fx-border-width: 0 0 1 0;
+}
+
+.panel {
+    -fx-background-color: #0b1120;
+}
+
+.code-area,
+.output-area {
+    -fx-font-family: "Consolas";
+    -fx-font-size: 14px;
+    -fx-background-color: #0f172a;
+    -fx-control-inner-background: #0f172a;
+    -fx-text-fill: #f8fafc;
+    -fx-prompt-text-fill: #cbd5e1;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.code-area .content,
+.output-area .content {
+    -fx-background-color: #0f172a;
+    -fx-background-radius: 8;
+}
+
+.primary-button {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18 8 18;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.theme-button {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #f8fafc;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18 8 18;
+}
+
+.theme-button:selected {
+    -fx-background-color: #334155;
+}
+
+.tab-pane {
+    -fx-background-color: #0b1120;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.tab:selected {
+    -fx-background-color: #0f172a;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 13px;
+}
+
+.tree-pane {
+    -fx-background-color: #0f172a;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.tree-placeholder {
+    -fx-font-size: 16px;
+    -fx-text-fill: #94a3b8;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: #111827;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #1f2937;
+    -fx-background-radius: 8;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #4b5563;
+    -fx-background-radius: 8;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #6b7280;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: #1f2937;
+    -fx-padding: 4;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: #9ca3af;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-color: #111827;
+}
+
+.scroll-bar:horizontal .track {
+    -fx-background-color: #1f2937;
+    -fx-background-radius: 8;
+}
+
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #4b5563;
+    -fx-background-radius: 8;
+}
+
+.scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #6b7280;
+}
+
+.scroll-bar:horizontal .increment-button,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color: #1f2937;
+    -fx-padding: 4;
+}
+
+.scroll-bar:horizontal .increment-arrow,
+.scroll-bar:horizontal .decrement-arrow {
+    -fx-background-color: #9ca3af;
+}
+
+.tree-node {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #475569;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 6;
+}
+
+.tree-node-label {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.tree-edge {
+    -fx-stroke: #94a3b8;
+    -fx-stroke-width: 1.5;
+}
+
+.tree-pane {
+    -fx-background-color: #0f172a;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.tree-scroll {
+    -fx-background: #0f172a;
+    -fx-background-color: #0f172a;
+    -fx-border-color: transparent;
+}
+
+.tree-scroll > .viewport {
+    -fx-background-color: #0f172a;
+}
+
+.tree-canvas {
+    -fx-background-color: #0f172a;
+}
+
+.tree-node {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #475569;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 6;
+}
+
+.tree-node-label {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.tree-edge {
+    -fx-stroke: #94a3b8;
+    -fx-stroke-width: 1.5;
+}
+
+.tree-placeholder {
+    -fx-font-size: 16px;
+    -fx-text-fill: #94a3b8;
+}

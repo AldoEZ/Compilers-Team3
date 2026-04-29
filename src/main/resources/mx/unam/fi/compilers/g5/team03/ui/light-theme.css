@@ -1,0 +1,107 @@
+.root-pane {
+    -fx-background-color: #f4f6f8;
+}
+
+.top-bar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d9dee5;
+    -fx-border-width: 0 0 1 0;
+}
+
+.panel {
+    -fx-background-color: #f4f6f8;
+}
+
+.code-area,
+.output-area {
+    -fx-font-family: "Consolas";
+    -fx-font-size: 14px;
+    -fx-background-color: #ffffff;
+    -fx-control-inner-background: #ffffff;
+    -fx-text-fill: #1f2937;
+    -fx-border-color: #cfd6df;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.code-area .content,
+.output-area .content {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+}
+
+.primary-button {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18 8 18;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.theme-button {
+    -fx-background-color: #e5e7eb;
+    -fx-text-fill: #111827;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18 8 18;
+}
+
+.theme-button:selected {
+    -fx-background-color: #cbd5e1;
+}
+
+.tab-pane {
+    -fx-background-color: #f4f6f8;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab {
+    -fx-background-color: #e5e7eb;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.tab:selected {
+    -fx-background-color: #ffffff;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #111827;
+    -fx-font-size: 13px;
+}
+
+.tree-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cfd6df;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.tree-placeholder {
+    -fx-font-size: 16px;
+    -fx-text-fill: #6b7280;
+}
+.tree-node {
+    -fx-background-color: #e2e8f0;
+    -fx-border-color: #94a3b8;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 6;
+}
+
+.tree-node-label {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.tree-edge {
+    -fx-stroke: #64748b;
+    -fx-stroke-width: 1.5;
+}

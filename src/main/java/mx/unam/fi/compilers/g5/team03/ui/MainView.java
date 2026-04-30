@@ -3,20 +3,20 @@ package mx.unam.fi.compilers.g5.team03.ui;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import org.fxmisc.richtext.CodeArea;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Region;
 
 public class MainView {
     private final BorderPane root;
@@ -74,7 +74,12 @@ public class MainView {
         HBox logosBox = new HBox(12);
         logosBox.getChildren().addAll(companyLogo, productLogo);
         
-        topBar.getChildren().addAll(runButton, themeButton, spacer, logosBox);
+        topBar.getChildren().addAll(
+            runButton,
+            themeButton,
+            spacer,
+            logosBox
+        );
         
         VBox editorPanel = new VBox(10);
         editorPanel.setPadding(new Insets(10));
@@ -131,6 +136,22 @@ public class MainView {
         themeButton.getStyleClass().add("theme-button");
     }
     
+    private ImageView createLogoView(String resourcePath, double fitHeight) {
+        var stream = getClass().getResourceAsStream(resourcePath);
+        
+        if(stream == null)
+            throw new IllegalArgumentException("Logo resource not found: " + resourcePath);
+        
+        Image image = new Image(stream);
+        ImageView imageView = new ImageView(image);
+        
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(fitHeight);
+        imageView.setSmooth(true);
+        
+        return imageView;
+    }
+    
     public Parent getRoot() {
         return root;
     }
@@ -161,21 +182,5 @@ public class MainView {
     
     public ToggleButton getThemeButton() {
         return themeButton;
-    }
-    
-    private ImageView createLogoView(String resourcePath, double fitHeight) {
-        var stream = getClass().getResourceAsStream(resourcePath);
-        
-        if (stream == null)
-            throw new IllegalArgumentException("Logo resource not found: " + resourcePath);
-        
-        Image image = new Image(stream);
-        ImageView imageView = new ImageView(image);
-        
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(fitHeight);
-        imageView.setSmooth(true);
-        
-        return imageView;
     }
 }

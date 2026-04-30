@@ -1,6 +1,6 @@
 # ParseFlow - RootNode Technologies
 
-parseFlow is a Java project managed with **Maven**.
+ParseFlow is a Java project managed with **Maven**.
 
 The project currently includes:
 
